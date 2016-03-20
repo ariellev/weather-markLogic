@@ -96,3 +96,19 @@ atlassian-ide-plugin.xml
 # ---------
 /incoming-distributions
 /intTestHomeDir
+
+
+.grunt
+.DS_Store
+_SpecRunner.html
+*.iml
+**/.idea
+**/.project
+**/.settings
+**/*.log
+
+node_modules
+npm-debug.log
+**/target/
+
+**/bower_components/**

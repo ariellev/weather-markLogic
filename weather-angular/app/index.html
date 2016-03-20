@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>weather markLogic</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/app.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js"></script>
+    <!--<script src="/bower_components/angular-material/angular-material.js"></script>
+    <script src="/bower_components/angular-messages/angular-messages.js"></script>
+    -->
+    <link href="/bower_components/angular-datepicker/dist/angular-datepicker.css" rel="stylesheet" type="text/css"/>
+
+    <script src="/bower_components/angular-datepicker/dist/angular-datepicker.min.js"></script>
+    <script src="app.js"></script>
+
+</head>
+
+<body ng-app="weatherApp">
+    <div id="screen"  ng-controller="SearchCtrl">
+        <div style="width: 1200px;  float: left;">
+            <div>
+                <div style="font-size: 50px; color: red;">Weather Events</div>
+                <div style="font-size: 20px">powered by MarkLogic</div>
+            </div>
+            <div style="margin: 20px 0px 0px 0px">
+                <form id="mainForm" name="mainForm">
+                    <input type="text" id="search-box" name="search" placeholder="find weather events..." ng-keypress="search($event)"/> <br/>
+                    <label for="from-date">From</label>
+                    <input type="date" id="from-date" name="from-date" ng-model="fromDate" placeholder="yyyy-MM-dd" min="1950-01-01" max="2011-12-31"/>
+                    <label for="to-date">To</label>
+                    <input type="date" id="to-date" name="to-date" ng-model="toDate" placeholder="yyyy-MM-dd" min="1950-01-01" max="2011-12-31"/>
+                    <label for="type">Type</label>
+                    <input type="date" id="type" name="type" ng-model="eventType" placeholder="e.g Tornado"/>
+                    <label for="to-date">State</label>
+                    <input type="date" id="state" name="state" ng-model="state" placeholder="e.g NY"/>
+                </form>
+            </div>
+            <!-- <div>
+                <select ng-options="city as city for city in cities" ng-change="update_data()" ng-model="place">
+                </select>
+            </div> -->
+        </div>
+
+        <div id="search-result">
+            <div>
+                <result-item ng-repeat="result in results" item="result"></result-item>
+            </div>
+        </div>
+    </div>
+
+<!-- <div style="width: 291px;float: right; height: 100%; margin-top: 10px;">
+        <iframe
+        width="291"
+        height="500"
+        frameborder="0" style="border:0"
+        ng-src="{{mapUrl}}" allowfullscreen>
+        </iframe>
+    </div>-->
+</body>
+</html>

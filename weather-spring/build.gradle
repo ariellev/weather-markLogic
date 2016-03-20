@@ -15,7 +15,7 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'tornadoes-spring'
+    baseName = 'weather-spring'
     version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.8
@@ -30,6 +30,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile 'org.springframework:spring-web'
     compile 'com.marklogic:java-client-api:3.0.4'
+    compile 'com.google.code.gson:gson:1.7.2'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
