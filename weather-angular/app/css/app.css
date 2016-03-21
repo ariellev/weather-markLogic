@@ -84,7 +84,6 @@ video#bgvid {
     color: red;
 }
 
-
 .event-item .data .remarks {
     font-size: 15px;
     white-space: nowrap;
@@ -105,9 +104,11 @@ video#bgvid {
 }
 
 .formInput {
-    height: 25px;
-    margin: 0 0 0 -6px;
-    padding: 10px 0 10px 10px;
+    height: 49px;
+    padding: 00px 0px 00px 5px;
+    border: none;
+    border-left: 1px solid #eee;
+    margin: 0 0 0 0px;
     font-size: 16px;
     width: 80px;
     opacity: 1;
@@ -117,22 +118,24 @@ video#bgvid {
 }
 
 .formSearch {
-    height: 25px;
+    padding-left: 30px;
+    height: 49px;
     margin: 0 0 0 0;
-    padding: 12px 0 12px 10px;
     font-size: 16px;
     width: 80px;
     background: red;
     color: white;
-    line-height: 29px;
-    border-width: 2px 2px 2px 2px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-
+    line-height: 57px;
 }
 
-#mainForm > .date {
-    width: 50px;
+#form-date-1 {
+    width: 160px;
+}
+
+#form-date-2 {
+    width: 160px;
 }
 
 #mainForm {
@@ -150,15 +153,14 @@ video#bgvid {
 
 #formInternal {
     opacity: 1;
-    padding-left: 100px;
+    padding-left: 30px;
 }
+
 #search-box {
     width: 500px;
 
     outline: 0;
 }
-
-
 
 /*
 video#bgvid {

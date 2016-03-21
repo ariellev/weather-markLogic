@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>weather markLogic</title>
+    <title>Severe Weather Events</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/app.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/bower_components/html5-boilerplate/dist/js/vendor/jquery-1.11.3.min.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-route/angular-route.min.js"></script>
     <!--<script src="/bower_components/angular-material/angular-material.js"></script>
@@ -21,28 +21,26 @@
 </head>
 
 <body ng-app="weatherApp" ng-controller="SearchCtrl">
-<video autoplay loop id="bgvid">
+<video muted="true" autoplay loop id="bgvid">
     <source src='videos/winter.webm' type=video/webm>
     <source src='videos/winter.mp4' type=video/mp4>
 </video>
 <div id="header" style="width: 1200px;  float: left;">
     <div>
         <div style="font-size: 50px; color: red;"><b>Severe Weather Events</b></div>
-        <div style="font-size: 20px; color: white"><b>powered by MarkLogic</b></div>
+        <!--<div style="font-size: 20px; color: white"><b>powered by MarkLogic</b></div>-->
     </div>
     <div >
-        <form id="mainForm" name="mainForm">
+        <form id="mainForm" name="mainForm" ng-keypress="search($event)">
             <div id="formInternal">
-                <input class="formInput lefInput" type="text" id="search-box" name="search" placeholder="find weather events..."
-                       ng-keypress="search($event)">
-                <input class="formInput" class="date" type="date" id="from-date" name="from-date" placeholder="from"
-                       min="1950-01-01"
-                       max="2011-12-31">
-                <input class="formInput" class="date" type="date" id="to-date" name="to-date" placeholder="to" min="1950-01-01"
-                       max="2011-12-31"/>
-                <input class="formInput" type="text" id="type" name="type" ng-model="eventType" placeholder="Type"/>
-                <input class="formInput" type="text" id="state" name="state" ng-model="state" placeholder="State"/>
-                <div class="formInput formSearch">Search</div>
+                <input autofocus="true" class="formInput lefInput" type="text" id="search-box" name="search" placeholder="find weather events..." ng-model="form.query">
+                <input id="form-date-1" class="formInput" class="date" type="date" id="from-date" name="from-date" placeholder="from"
+                       min="1950-01-01" max="2011-12-31" ng-model="form.fromDate">
+                <input id="form-date-2" class="formInput" class="date" type="date" id="to-date" name="to-date" placeholder="to" min="1950-01-01"
+                       max="2011-12-31" ng-model="form.toDate"/>
+                <input class="formInput" type="text" id="type" name="type" ng-model="form.eventType" placeholder="Type"/>
+                <input class="formInput" type="text" id="state" name="state" ng-model="form.state" placeholder="State"/>
+                <div class="formInput formSearch" ng-click="search($event)">Search</div>
             </div>
         </form>
 

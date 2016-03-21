@@ -21,7 +21,7 @@ public class WeatherController {
 
     @Autowired
     @Qualifier("weatherService")
-    private IWeatherService service;
+    private WeatherService service;
 
     @PostConstruct
     private void init() {
@@ -29,7 +29,7 @@ public class WeatherController {
         logger.info("service={}", service);
     }
 
-    public void setService(IWeatherService service) {
+    public void setService(WeatherService service) {
         this.service = service;
     }
 
