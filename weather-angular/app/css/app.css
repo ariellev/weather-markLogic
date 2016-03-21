@@ -10,27 +10,36 @@ body {
     font-size: 20px;
 }
 
-#screen {
-    padding: 40px 20px 20px 40px;
-    overflow-y: auto;
-    border-radius: 15px;
-    margin-top: 10px;
+video#bgvid {
     position: relative;
+    top: 0;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
 }
 
-#search-box {
-    padding: 10px;
-    width: 1000px;
-    border: 1px solid #000;
-    outline: 0;
-    font-size: 15px;
+#header {
+    padding-left: 60px;
+    position: absolute;
+    top: 160px;
 }
 
 #search-result {
+    overflow-y: auto;
+    padding-left: 60px;
     margin: 20px 0 100px 0;
     width: 1000px;
-    position: relative;
-    float: left;
+    position: absolute;
+
+    top: 400px;
 }
 
 #heading {
@@ -44,7 +53,7 @@ body {
 }
 
 .event-item {
-    width: 1000px;
+    width: 1200px;
     height: 60px;
     border-bottom: solid 1px #eee;
     padding: 8px 0;
@@ -90,13 +99,81 @@ body {
     margin-right: 50px;
 }
 
-#mainForm > input {
-    margin-bottom: 10px;
-    margin-right: 10px;
+.lefInput {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.formInput {
+    height: 25px;
+    margin: 0 0 0 -6px;
+    padding: 10px 0 10px 10px;
+    font-size: 16px;
+    width: 80px;
+    opacity: 1;
+    position: relative;
+    float: left;
+    background: white;
+}
+
+.formSearch {
+    height: 25px;
+    margin: 0 0 0 0;
+    padding: 12px 0 12px 10px;
+    font-size: 16px;
+    width: 80px;
+    background: red;
+    color: white;
+    line-height: 29px;
+    border-width: 2px 2px 2px 2px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+
+}
+
+#mainForm > .date {
+    width: 50px;
 }
 
 #mainForm {
-    padding: 20px 0 20px 0;
-    border-top: solid 1px #eee;
-    border-bottom: solid 1px #eee;
+    margin: 20px 0 0 0;
+    width: 1200px;
+    height: 50px;
+    padding: 20px 0 20px 20px;
+    background: black;
+    opacity: 0.5;
+    border-radius: 8px;
+    border-bottom: dotted 1px lightseagreen;
+    border-top: dotted 1px lightseagreen;
+
 }
+
+#formInternal {
+    opacity: 1;
+    padding-left: 100px;
+}
+#search-box {
+    width: 500px;
+
+    outline: 0;
+}
+
+
+
+/*
+video#bgvid {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+}
+*/
