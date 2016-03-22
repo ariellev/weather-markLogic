@@ -18,23 +18,28 @@ var weatherApp = angular.module('weatherApp', ['datePicker'])
 
 
             $scope.form = {
+                'query': "",
                 'fromDate' : new Date(1950, 1, 1),
                 'toDate' : new Date(),
                 'state' : "",
                 'eventType' : ""
             };
 
-            $http.get('http://localhost:8080/weather/v1/events/TORNADO/?').
-            then(processEvents);
+/*            $http.get('http://localhost:8080/weather/v1/events/TORNADO/?').
+            then(processEvents);*/
 
 
             $scope.search = function (event) {
                 if (event.keyCode === 13) {
                     console.log('performing search..');
-                    console.log('data=' + JSON.stringify($scope.form));
+                    var str = JSON.stringify($scope.form);
+                    console.log('data=' + str);
+                    var data = JSON.parse(str);
+                    data.fromDate = $scope.form.fromDate.getTime();
+                    data.toDate = $scope.form.toDate.getTime();
 
                     var query = $scope.form.query.trim();
-                        $http.get('http://localhost:8080/weather/v1/events/TORNADO/?').
+                        $http.post('http://localhost:8080/weather/v1/events/search/?', data).
                         then(processEvents);
                 }
             };

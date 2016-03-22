@@ -1,0 +1,199 @@
+{
+  "snippet-format": "snippet",
+  "total": 14,
+  "start": 1,
+  "page-length": 10,
+  "results": [
+    {
+      "index": 1,
+      "uri": "/events_types",
+      "path": "fn:doc(\"/events_types\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents_types",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events_types\")/array-node()",
+          "match-text": []
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "uri": "/events/8_96d795b85768a9d7e332fa1c900bd72e543fce2ea7caff20767e18cf5371d1af5156f2650ac477513c713e8764f12ffbe67d8a60c1e64321fa737b1b515f035b",
+      "path": "fn:doc(\"/events/8_96d795b85768a9d7e332fa1c900bd72e543fce2ea7caff20767e18cf5371d1af5156f2650ac477513c713e8764f12ffbe67d8a60c1e64321fa737b1b515f035b\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F8_96d795b85768a9d7e332fa1c900bd72e543fce2ea7caff20767e18cf5371d1af5156f2650ac477513c713e8764f12ffbe67d8a60c1e64321fa737b1b515f035b",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/8_96d795b85768a9d7e332fa1c900bd72e543fce2ea7caff20767e18cf5371d1af5156f2650ac477513c713e8764f12ffbe67d8a60c1e64321fa737b1b515f035b\")/object-node()",
+          "match-text": [
+            "TORNADO 1952-01-22 0900 AL 8_96d795b85768a9d7e332fa1c900bd72e543fce2ea7caff20767e18cf5371d1af5156f2650ac477513c713e8764f12ffbe67d8a60c1e64321fa737b1b515f035b"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "uri": "raw/mini-data-geo.json",
+      "path": "fn:doc(\"raw/mini-data-geo.json\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=raw%2Fmini-data-geo.json",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"raw/mini-data-geo.json\")/array-node()",
+          "match-text": []
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "uri": "raw/states_to_codes.json",
+      "path": "fn:doc(\"raw/states_to_codes.json\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=raw%2Fstates_to_codes.json",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"raw/states_to_codes.json\")/array-node()",
+          "match-text": []
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "uri": "/events/1_c3fb2c8ca50bd71b75dabb045f31dd7aebab32a67040a6ec167dea521e6bd7be31030ef31b105c2b08f7ca5312eb8fb3ab252a988eb799622012787764783276",
+      "path": "fn:doc(\"/events/1_c3fb2c8ca50bd71b75dabb045f31dd7aebab32a67040a6ec167dea521e6bd7be31030ef31b105c2b08f7ca5312eb8fb3ab252a988eb799622012787764783276\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F1_c3fb2c8ca50bd71b75dabb045f31dd7aebab32a67040a6ec167dea521e6bd7be31030ef31b105c2b08f7ca5312eb8fb3ab252a988eb799622012787764783276",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/1_c3fb2c8ca50bd71b75dabb045f31dd7aebab32a67040a6ec167dea521e6bd7be31030ef31b105c2b08f7ca5312eb8fb3ab252a988eb799622012787764783276\")/object-node()",
+          "match-text": [
+            "TORNADO 1950-04-18 0130 AL 1_c3fb2c8ca50bd71b75dabb045f31dd7aebab32a67040a6ec167dea521e6bd7be31030ef31b105c2b08f7ca5312eb8fb3ab252a988eb799622012787764783276"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "uri": "/events/4_22c92d92312db6f5d7b561c33f400ab614a7a0cd3def6e21fb7c96eb684cb7ad5ed79e22cc2af0e1abcc90b67d331f352d001bbd0b98b87db94c01bad6271fcb",
+      "path": "fn:doc(\"/events/4_22c92d92312db6f5d7b561c33f400ab614a7a0cd3def6e21fb7c96eb684cb7ad5ed79e22cc2af0e1abcc90b67d331f352d001bbd0b98b87db94c01bad6271fcb\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F4_22c92d92312db6f5d7b561c33f400ab614a7a0cd3def6e21fb7c96eb684cb7ad5ed79e22cc2af0e1abcc90b67d331f352d001bbd0b98b87db94c01bad6271fcb",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/4_22c92d92312db6f5d7b561c33f400ab614a7a0cd3def6e21fb7c96eb684cb7ad5ed79e22cc2af0e1abcc90b67d331f352d001bbd0b98b87db94c01bad6271fcb\")/object-node()",
+          "match-text": [
+            "TORNADO 1951-06-08 0900 AL 4_22c92d92312db6f5d7b561c33f400ab614a7a0cd3def6e21fb7c96eb684cb7ad5ed79e22cc2af0e1abcc90b67d331f352d001bbd0b98b87db94c01bad6271fcb"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "uri": "/events/10_4ef62d75203b1892a25c5d8bc072272067d9f10145252f0ea2d1f33f080c864d5d0dec25db06743b634f66ebefdc0dd5aadec5a188a697b0da92c75260627a57",
+      "path": "fn:doc(\"/events/10_4ef62d75203b1892a25c5d8bc072272067d9f10145252f0ea2d1f33f* Connection #0 to host localhost left intact
+      0
+      80
+      c864d5d0dec25db06743b634f66ebefdc0dd5aadec5a188a697b0da92c75260627a57
+      \
+      ")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F10_4ef62d75203b1892a25c5d8bc072272067d9f10145252f0ea2d1f33f080c864d5d0dec25db06743b634f66ebefdc0dd5aadec5a188a697b0da92c75260627a57",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/10_4ef62d75203b1892a25c5d8bc072272067d9f10145252f0ea2d1f33f080c864d5d0dec25db06743b634f66ebefdc0dd5aadec5a188a697b0da92c75260627a57\")/object-node()",
+          "match-text": [
+            "TORNADO 1952-02-13 2000 AL 10_4ef62d75203b1892a25c5d8bc072272067d9f10145252f0ea2d1f33f080c864d5d0dec25db06743b634f66ebefdc0dd5aadec5a188a697b0da92c75260627a57"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "uri": "/events/7_23c68e6313bfddb66453cc94c004a2eb1bee880f7a36aefa531dc4b3f5b5f4cfc59c1fb4cfc4ea554bf731de52f7c3ffd16764dec2f250186446c0ac09acb1f6",
+      "path": "fn:doc(\"/events/7_23c68e6313bfddb66453cc94c004a2eb1bee880f7a36aefa531dc4b3f5b5f4cfc59c1fb4cfc4ea554bf731de52f7c3ffd16764dec2f250186446c0ac09acb1f6\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F7_23c68e6313bfddb66453cc94c004a2eb1bee880f7a36aefa531dc4b3f5b5f4cfc59c1fb4cfc4ea554bf731de52f7c3ffd16764dec2f250186446c0ac09acb1f6",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/7_23c68e6313bfddb66453cc94c004a2eb1bee880f7a36aefa531dc4b3f5b5f4cfc59c1fb4cfc4ea554bf731de52f7c3ffd16764dec2f250186446c0ac09acb1f6\")/object-node()",
+          "match-text": [
+            "TORNADO 1951-11-16 0100 AL 7_23c68e6313bfddb66453cc94c004a2eb1bee880f7a36aefa531dc4b3f5b5f4cfc59c1fb4cfc4ea554bf731de52f7c3ffd16764dec2f250186446c0ac09acb1f6"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "uri": "/events/6_d080de7aa3a8388f0ccbb0db460cd596f2d058144195f9e7f792607651c09c1b0c76988364a33a4510265df26a145a25861880f2d182c104c5d4b6b502b67b1a",
+      "path": "fn:doc(\"/events/6_d080de7aa3a8388f0ccbb0db460cd596f2d058144195f9e7f792607651c09c1b0c76988364a33a4510265df26a145a25861880f2d182c104c5d4b6b502b67b1a\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F6_d080de7aa3a8388f0ccbb0db460cd596f2d058144195f9e7f792607651c09c1b0c76988364a33a4510265df26a145a25861880f2d182c104c5d4b6b502b67b1a",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/6_d080de7aa3a8388f0ccbb0db460cd596f2d058144195f9e7f792607651c09c1b0c76988364a33a4510265df26a145a25861880f2d182c104c5d4b6b502b67b1a\")/object-node()",
+          "match-text": [
+            "TORNADO 1951-11-15 2000 AL 6_d080de7aa3a8388f0ccbb0db460cd596f2d058144195f9e7f792607651c09c1b0c76988364a33a4510265df26a145a25861880f2d182c104c5d4b6b502b67b1a"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "uri": "/events/3_2f41c05cd70212847fa82347b78237ea3228d9fa3ebd77a3f72ebe1e0002b9cc0ada6326bc541b1f3727ed9845c5568e2edf5e6ecb3ae924811ffbf6430be2ad",
+      "path": "fn:doc(\"/events/3_2f41c05cd70212847fa82347b78237ea3228d9fa3ebd77a3f72ebe1e0002b9cc0ada6326bc541b1f3727ed9845c5568e2edf5e6ecb3ae924811ffbf6430be2ad\")",
+      "score": 0,
+      "confidence": 0,
+      "fitness": 0,
+      "href": "/v1/documents?uri=%2Fevents%2F3_2f41c05cd70212847fa82347b78237ea3228d9fa3ebd77a3f72ebe1e0002b9cc0ada6326bc541b1f3727ed9845c5568e2edf5e6ecb3ae924811ffbf6430be2ad",
+      "mimetype": "application/json",
+      "format": "json",
+      "matches": [
+        {
+          "path": "fn:doc(\"/events/3_2f41c05cd70212847fa82347b78237ea3228d9fa3ebd77a3f72ebe1e0002b9cc0ada6326bc541b1f3727ed9845c5568e2edf5e6ecb3ae924811ffbf6430be2ad\")/object-node()",
+          "match-text": [
+            "TORNADO 1951-02-20 1600 AL 3_2f41c05cd70212847fa82347b78237ea3228d9fa3ebd77a3f72ebe1e0002b9cc0ada6326bc541b1f3727ed9845c5568e2edf5e6ecb3ae924811ffbf6430be2ad"
+          ]
+        }
+      ]
+    }
+  ],
+  "qtext": "time GT 1999",
+  "warning": "[ GT 1999]"
+}

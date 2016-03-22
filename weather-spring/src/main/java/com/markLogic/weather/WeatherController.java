@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 
+@CrossOrigin
 @RestController
 @EnableAutoConfiguration
 @ComponentScan({"com.markLogic.weather"})
@@ -39,8 +40,8 @@ public class WeatherController {
     }
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    String getEvent(@RequestParam(value = "id", required = true) String id) {
+    @RequestMapping(value = "/id/{id}/**", method = RequestMethod.GET)
+    String getEvent(@PathVariable(value = "id") String id) {
         logger.info("getEvent, id=" + id);
         String event = service.getEvent(id);
         return event;
@@ -50,6 +51,13 @@ public class WeatherController {
     Event[] getEventByType(@PathVariable(value = "type") String type) {
         logger.info("getEventByType, type=" + type);
         Event[] events = service.getEventsByType(type);
+        return events;
+    }
+
+    @RequestMapping(value = "/search/**", method = RequestMethod.POST)
+    Event[] searchEvents(@RequestBody SearchPayload payload) {
+        logger.info("searchEvents, payload=" + payload);
+        Event[] events = service.searchEvents(payload.getQuery(), payload.getFromDate(), payload.getToDate(), payload.getEventType(), payload.getState(), 0, 10);
         return events;
     }
 
