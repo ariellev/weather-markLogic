@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.marklogic.client.pojo.annotation.GeospatialLatitude;
 import com.marklogic.client.pojo.annotation.GeospatialLongitude;
 import com.marklogic.client.pojo.annotation.Id;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Created by ariellev on 20.03.16.
@@ -179,6 +180,12 @@ public class Event {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String generateId() {
+        int random = 1000000 + (int) (Math.random() * ((10000000 - 1000000) + 1));
+        System.out.println("generateId, hashing=" + toString());
+        return random + "_" + DigestUtils.sha512Hex(toString());
     }
 
     @Override

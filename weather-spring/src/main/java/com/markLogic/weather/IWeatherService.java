@@ -8,5 +8,12 @@ public interface IWeatherService {
 
     Event[] getEventsByType(String type);
 
-    Event[] searchEvents(String text, Long fromDate, Long toDate, String type, String state, long start, int pageLength);
+    Event[] searchEvents(String queryString, Long fromDate, Long toDate, String type, String state, long start, int pageLength);
+
+    Event[] searchEventsByPlace(String place, Long fromDate, Long toDate, String type, String state, long start, int pageLength);
+
+    void updateEvent(Event event);
+
+    void deleteEvent(String id);
+
 }

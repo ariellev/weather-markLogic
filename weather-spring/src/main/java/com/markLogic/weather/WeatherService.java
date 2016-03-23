@@ -1,14 +1,13 @@
 package com.markLogic.weather;
 
+import com.google.gson.Gson;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.JSONDocumentManager;
-import com.marklogic.client.io.Format;
-import com.marklogic.client.io.SearchHandle;
-import com.marklogic.client.io.StringHandle;
+import com.marklogic.client.io.*;
 import com.marklogic.client.query.MatchDocumentSummary;
+import com.marklogic.client.query.QueryDefinition;
 import com.marklogic.client.query.QueryManager;
-import com.marklogic.client.query.RawQueryByExampleDefinition;
 import com.marklogic.client.query.StringQueryDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -58,13 +61,13 @@ public class WeatherService implements IWeatherService {
 
     @PreDestroy
     private void destory() {
-        logger.info("destroy");
+        logger.info("releasing markLogic client");
         client.release();
     }
 
     @Override
     public String getEvent(String id) {
-        return docMgr.read("/events/" + id, new StringHandle()).get();
+        return docMgr.read(getUri(id), new StringHandle()).get();
     }
 
     @Override
@@ -127,32 +130,27 @@ public class WeatherService implements IWeatherService {
     }
 
     @Override
-    public Event[] searchEvents(String text, Long fromDate, Long toDate, String type, String state, long start, int pageLength) {
-        logger.info("searchEvents, text={}", text);
+    public Event[] searchEvents(String queryString, Long fromDate, Long toDate, String type, String state, long start, int pageLength) {
+        logger.info("searchEvents, queryString={}", queryString);
         logger.info("searchEvents, from={}, to={}", new Date(fromDate), new Date(toDate));
-        logger.info("searchEvents, text={}", text);
         logger.info("searchEvents, type={}, state={}", type, state);
         logger.info("searchEvents, start={}, pageLength={}", start, pageLength);
 
+        QueryDefinition querydef;
+        if (queryString.isEmpty()) {
+            logger.info("Empty text field, using query by example");
+            //String rawJSONQuery = "{\"$query\": { \"$and\":[{\"epoch_time\":{\"$lt\":1458685818883}},{\"epoch_time\":{\"$ge\":-621907200000}}]}}";
+            String rawJSONQuery = "{\"$query\": {}}";
+            StringHandle rawHandle = new StringHandle();
+            rawHandle.withFormat(Format.JSON).set(rawJSONQuery);
 
-/*        StringQueryDefinition qd = queryMgr.newStringDefinition();
-        qd.setCriteria("Batman AND Robin");
-        StructuredQueryBuilder qb = new StructuredQueryBuilder();
-        StructuredQueryDefinition querydef = qb.;
-        StructuredQueryDefinition criteria =
-                sb.containerQuery(sb.jsonProperty("myProp"), sb.term("theValue"));*/
-
-        // composing search query
-
-        String rawJSONQuery = "{\"$query\": {}}";
-        //String rawJSONQuery = "{\"$query\": { \"$and\":[{\"epoch_time\":{\"$lt\":1458685818883}},{\"epoch_time\":{\"$ge\":-621907200000}}]}}";
-
-        //String rawJSONQuery = "{ \"$query\": { \"date\": \"1950-04-18\" } }";
-        StringHandle rawHandle = new StringHandle();
-        rawHandle.withFormat(Format.JSON).set(rawJSONQuery);
-
-        RawQueryByExampleDefinition querydef =
-                queryMgr.newRawQueryByExampleDefinition(rawHandle);
+            querydef = queryMgr.newRawQueryByExampleDefinition(rawHandle);
+        } else {
+            logger.info("Non empty text field, using string query");
+            StringQueryDefinition qd = queryMgr.newStringDefinition();
+            qd.setCriteria(queryString);
+            querydef = qd;
+        }
 
         String collection = type.isEmpty() ? "all-events" : type;
         if (collection.equals("all-events")) {
@@ -166,8 +164,61 @@ public class WeatherService implements IWeatherService {
 
         Event[] events = parseEvents(resultsHandle);
         return events;
-        // StringQueryDefinition qd = queryMgr.newStringDefinition();
-//        qd.setCriteria("Batman AND Robin");
-        //return genericSearch(query, start, pageLength, false);
+    }
+
+    @Override
+    public Event[] searchEventsByPlace(String place, Long fromDate, Long toDate, String type, String state, long start, int pageLength) {
+        logger.info("searchEventsByPlace, place={}", place);
+        String rawJSONQuery = "\"{\"$query\": { \"place\": \"" + place + "\" }}";
+        StringHandle rawHandle = new StringHandle();
+        rawHandle.withFormat(Format.JSON).set(rawJSONQuery);
+
+        QueryDefinition querydef = queryMgr.newRawQueryByExampleDefinition(rawHandle);
+        querydef.setCollections("raw-metadata");
+
+        SearchHandle resultsHandle = queryMgr.search(querydef, new SearchHandle());
+
+        logger.info("Matched {} documents in collection '{}'", resultsHandle.getTotalResults(), querydef.getCollections());
+
+        Event[] events = parseEvents(resultsHandle);
+
+        return new Event[0];
+    }
+
+
+    private String getUri(String id) {
+        return "/events/" + id;
+    }
+
+    @Override
+    public void updateEvent(Event event) {
+        if (event.getId() == null) {
+            String id = event.generateId();
+            event.setId(id);
+        }
+
+        String uri = getUri(event.getId());
+        logger.info("updateEvent, uri={}", uri);
+
+        Gson gson = new Gson();
+        String eventAsString = gson.toJson(event, Event.class);
+        InputStream in = new ByteArrayInputStream(eventAsString.getBytes(StandardCharsets.UTF_8));
+        InputStreamHandle handle = new InputStreamHandle(in);
+
+        DocumentMetadataHandle metadata = new DocumentMetadataHandle().withCollections("all-events", event.getEventType(), event.getState());
+
+        docMgr.write(uri, metadata, handle);
+
+        try {
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteEvent(String id) {
+        String uri = getUri(id);
+        docMgr.delete(uri);
     }
 }

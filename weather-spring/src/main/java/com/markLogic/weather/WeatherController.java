@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import javax.annotation.PostConstruct;
 
 @CrossOrigin
 @RestController
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {JacksonAutoConfiguration.class})
 @ComponentScan({"com.markLogic.weather"})
 @RequestMapping("weather/v1/events")
 public class WeatherController {
@@ -59,6 +60,18 @@ public class WeatherController {
         logger.info("searchEvents, payload=" + payload);
         Event[] events = service.searchEvents(payload.getQuery(), payload.getFromDate(), payload.getToDate(), payload.getEventType(), payload.getState(), 0, 10);
         return events;
+    }
+
+    @RequestMapping(value = "/delete/{id}/**", method = RequestMethod.DELETE)
+    void deleteEvent(@PathVariable(value = "id") String id) {
+        logger.info("deleteEvent, id=" + id);
+        service.deleteEvent(id);
+    }
+
+    @RequestMapping(value = "/update/**", method = RequestMethod.POST)
+    void updateEvent(@RequestBody Event event) {
+        logger.info("updateEvent, event=" + event);
+        service.updateEvent(event);
     }
 
     public static void main(String[] args) throws Exception {
