@@ -1,0 +1,52 @@
+{
+  "options": {
+    "constraint": [
+      {
+        "name": "injuries_constraint",
+        "range": {
+          "facet": "true",
+          "json-property": "injuries",
+          "type": "xs:int"
+        }
+      },
+      {
+        "name": "fatalitites_constraint",
+        "range": {
+          "facet": "true",
+          "json-property": "fatalitites",
+          "type": "xs:int"
+        }
+      },
+      {
+        "name": "prop_dmg_constraint",
+        "range": {
+          "facet": "true",
+          "json-property": "prop_dmg",
+          "type": "xs:int"
+        }
+      },
+      {
+        "name": "crop_dmg_constraint",
+        "range": {
+          "facet": "true",
+          "json-property": "crop_dmg",
+          "type": "xs:int"
+        }
+      },
+      {
+        "name": "epoch_time_constraint",
+        "range": {
+          "facet": "true",
+          "json-property": "epoch_time_dmg",
+          "type": "xs:long"
+        }
+      },
+      {
+        "name": "type",
+        "value": {
+          "json-property": "event_type"
+        }
+      }
+    ]
+  }
+}
