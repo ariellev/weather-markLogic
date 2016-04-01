@@ -1,7 +1,7 @@
 <div class="result-item">
     <div class="event-item">
         <div class="badge">
-            <div class="type"><b>{{item.eventType}}</b></div>
+            <div class="type"><b>{{item.event_type}}</b></div>
             <div style="font-size : 18px;">{{item.date | date : format : timezone}}</div>
         </div>
         <div class="data" style="width: 100px">
@@ -10,8 +10,8 @@
             <div class="data remarks">{{item.remarks}}</div>
         </div>
         <div class="data" style="width: 170px">
-            <div>{{item.totalProp | number}} properties</div>
-            <div>{{item.totalCrop | number}} crops</div>
+            <div>{{item.total_prop | number}} properties</div>
+            <div>{{item.total_crop | number}} crops</div>
         </div>
         <div class="data">
             <div>{{item.latitude | number}}, {{item.longitude | number}}</div>

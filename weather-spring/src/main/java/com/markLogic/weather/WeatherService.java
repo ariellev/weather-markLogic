@@ -21,17 +21,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * Created by ariellev on 20.03.16.
  */
 @Service
 public class WeatherService implements IWeatherService {
+    private static final String EVENT_OPTIONS = "weather-event-options";
     private DatabaseClient client;
     private JSONDocumentManager docMgr;
     private QueryManager queryMgr;
 
     private EventBuilder eventBuilder;
+    private PlaceBuilder placeBuilder;
 
     @Value("${weather.user}")
     private String user;
@@ -57,6 +62,8 @@ public class WeatherService implements IWeatherService {
 
         eventBuilder = new EventBuilder();
         eventBuilder.setDocumentManager(docMgr);
+
+        placeBuilder = new PlaceBuilder(docMgr);
     }
 
     @PreDestroy
@@ -99,36 +106,6 @@ public class WeatherService implements IWeatherService {
         return events;
     }
 
-    private Event[] genericSearch(String arg, long start, int pageLength, boolean facetsOnly) {
-        logger.info("Performing search() with arg = " + (arg == "" ? " EMPTY_STRING" : arg));
-        String options = null;
-
-/*        if (facetsOnly == "TRUEALL") {
-        }*/
-
-        logger.info(" options uri set to " + options);
-
-        // create a search definition
-        StringQueryDefinition querydef = queryMgr.newStringDefinition(options);
-
-        // set the search argument
-        querydef.setCriteria(arg);
-
-        // create a handle for the search results
-        SearchHandle resultsHandle = new SearchHandle();
-
-        // set the page length
-        queryMgr.setPageLength(pageLength);
-
-        // run the search
-        queryMgr.search(querydef, resultsHandle, start);
-
-        logger.info("Matched {} documents with '{}'", resultsHandle.getTotalResults(), querydef.getCriteria());
-
-        Event[] events = parseEvents(resultsHandle);
-        return events;
-    }
-
     @Override
     public Event[] searchEvents(String queryString, Long fromDate, Long toDate, String type, String state, long start, int pageLength) {
         logger.info("searchEvents, queryString={}", queryString);
@@ -136,27 +113,35 @@ public class WeatherService implements IWeatherService {
         logger.info("searchEvents, type={}, state={}", type, state);
         logger.info("searchEvents, start={}, pageLength={}", start, pageLength);
 
+        Set<String> query = new HashSet<String>();
+        StringJoiner joiner = new StringJoiner(" AND ");
+
+
+        GeoQueryParser geoQueryParser = new GeoQueryParser(placeBuilder, queryString);
+        if (geoQueryParser.isGeoQuery()) {
+            joiner.add(geoQueryParser.format());
+        } else if (!queryString.trim().isEmpty()) {
+            joiner.add(queryString);
+        }
+
+        // + "AND epoch_time GT " + fromDate + " AND epoch_time LT " + toDate;
+        if (!type.isEmpty()) {
+            joiner.add("event_type:" + type);
+        }
+        if (!state.isEmpty()) {
+            joiner.add("state:" + state);
+        }
+
+        String qString = joiner.toString();
+        logger.info("searchEvents, qString={}", qString);
+
         QueryDefinition querydef;
-        if (queryString.isEmpty()) {
-            logger.info("Empty text field, using query by example");
-            //String rawJSONQuery = "{\"$query\": { \"$and\":[{\"epoch_time\":{\"$lt\":1458685818883}},{\"epoch_time\":{\"$ge\":-621907200000}}]}}";
-            String rawJSONQuery = "{\"$query\": {}}";
-            StringHandle rawHandle = new StringHandle();
-            rawHandle.withFormat(Format.JSON).set(rawJSONQuery);
 
-            querydef = queryMgr.newRawQueryByExampleDefinition(rawHandle);
-        } else {
-            logger.info("Non empty text field, using string query");
-            StringQueryDefinition qd = queryMgr.newStringDefinition();
-            qd.setCriteria(queryString);
-            querydef = qd;
-        }
+        StringQueryDefinition qd = queryMgr.newStringDefinition(EVENT_OPTIONS);
+        qd.setCriteria(qString);
+        querydef = qd;
 
-        String collection = type.isEmpty() ? "all-events" : type;
-        if (collection.equals("all-events")) {
-            collection = state.isEmpty() ? collection : state;
-        }
-
+        String collection = "all-events";
         querydef.setCollections(collection);
         SearchHandle resultsHandle = queryMgr.search(querydef, new SearchHandle());
 
@@ -220,5 +205,10 @@ public class WeatherService implements IWeatherService {
     public void deleteEvent(String id) {
         String uri = getUri(id);
         docMgr.delete(uri);
+    }
+
+    @Override
+    public Place getPlace(String name) {
+        return placeBuilder.getPlace(name);
     }
 }

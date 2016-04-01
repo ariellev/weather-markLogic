@@ -20,5 +20,11 @@
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 3000 -c-1"
+  },
+  "dependencies": {
+    "angular-formly": "^8.1.0",
+    "angular-formly-templates-bootstrap": "^6.3.2",
+    "api-check": "^7.5.5",
+    "bootstrap": "^3.3.6"
   }
 }

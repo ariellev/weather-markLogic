@@ -16,4 +16,5 @@ public interface IWeatherService {
 
     void deleteEvent(String id);
 
+    Place getPlace(String name);
 }

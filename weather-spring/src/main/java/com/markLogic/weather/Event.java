@@ -20,6 +20,13 @@ public class Event {
     private int fatalities;
     private int injuries;
 
+    @SerializedName("total_prop")
+    private int totalProp;
+
+    @SerializedName("total_crop")
+    private int totalCrop;
+
+
     @SerializedName("prop_dmg")
     private int propDmg;
 
@@ -188,6 +195,22 @@ public class Event {
         return random + "_" + DigestUtils.sha512Hex(toString());
     }
 
+    public int getTotalProp() {
+        return totalProp;
+    }
+
+    public void setTotalProp(int totalProp) {
+        this.totalProp = totalProp;
+    }
+
+    public int getTotalCrop() {
+        return totalCrop;
+    }
+
+    public void setTotalCrop(int totalCrop) {
+        this.totalCrop = totalCrop;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -195,6 +218,8 @@ public class Event {
                 ", eventType='" + eventType + '\'' +
                 ", fatalities=" + fatalities +
                 ", injuries=" + injuries +
+                ", totalProp=" + totalProp +
+                ", totalCrop=" + totalCrop +
                 ", propDmg=" + propDmg +
                 ", propDmgExp=" + propDmgExp +
                 ", cropDmg=" + cropDmg +

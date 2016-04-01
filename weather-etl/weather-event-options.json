@@ -1,50 +1,88 @@
 {
   "options": {
+
     "constraint": [
       {
-        "name": "injuries_constraint",
+        "name": "geo",
+        "geo-json-property": {
+          "parent-property": "location",
+          "json-property": "coordinates"
+        }
+      },
+      {
+        "name": "injuries",
         "range": {
           "facet": "true",
           "json-property": "injuries",
           "type": "xs:int"
         }
       },
-      {
-        "name": "fatalitites_constraint",
+      { 
+        "name": "coll",
+        "collection": {
+        "prefix": "",
+        "facet": true,
+        "facet-option": [ "limit=5" ]
+        }
+      },
+      {                 
+        "name": "fatalities",
         "range": {
           "facet": "true",
-          "json-property": "fatalitites",
+          "json-property": "fatalities",
           "type": "xs:int"
         }
       },
       {
-        "name": "prop_dmg_constraint",
+        "name": "crop",
         "range": {
           "facet": "true",
-          "json-property": "prop_dmg",
-          "type": "xs:int"
+          "json-property": "total_crop",
+          "type": "xs:decimal"
         }
       },
       {
-        "name": "crop_dmg_constraint",
+        "name": "prop",
         "range": {
           "facet": "true",
-          "json-property": "crop_dmg",
-          "type": "xs:int"
+          "json-property": "total_prop",
+          "type": "xs:decimal"
         }
       },
       {
-        "name": "epoch_time_constraint",
+        "name": "epoch_time",
         "range": {
           "facet": "true",
-          "json-property": "epoch_time_dmg",
+          "json-property": "epoch_time",
           "type": "xs:long"
         }
       },
       {
-        "name": "type",
+        "name": "date",
+        "range": {
+          "facet": "true",
+          "json-property": "date",
+          "type": "xs:date"
+        }
+      }, 
+      {
+        "name": "year",
+        "range": {
+          "facet": "true",
+          "json-property": "year",
+          "type": "xs:int"
+        }
+      },            
+      {
+        "name": "event_type",
         "value": {
           "json-property": "event_type"
+        }
+      },            
+      {
+        "name": "state",
+        "value": {
+          "json-property": "state"
         }
       }
     ]

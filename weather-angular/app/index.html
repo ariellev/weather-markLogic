@@ -28,7 +28,7 @@
 <div id="header" style="width: 1200px;  float: left;">
     <div>
         <div style="font-size: 50px; color: red;"><b>Severe Weather Events</b></div>
-        <!--<div style="font-size: 20px; color: white"><b>powered by MarkLogic</b></div>-->
+        <div style="font-size: 20px; color: white"><b>powered by MarkLogic</b></div>
     </div>
     <div >
         <form id="mainForm" name="mainForm" ng-keypress="search($event)">
@@ -43,15 +43,39 @@
                 <div class="formInput formSearch" ng-click="search($event)">Search</div>
             </div>
         </form>
-
-
     </div>
 </div>
+
+
 <div id="search-result">
     <div>
         <result-item ng-repeat="result in results" item="result"></result-item>
     </div>
 </div>
+
+
+<!--<div class="container col-md-4 col-md-offset-4" ng-controller="EventCtrl as vm">
+    <form id="eventForm" name="eventForm" ng-keypress="update($event)">
+        <div id="eventFormInternal">
+            <input class="formInput" type="text" id="fatalities" name="type" ng-model="vm.fatalities" placeholder="Type"/>
+            <input class="formInput" type="text" id="injuries" name="type" ng-model="vm.injuries" placeholder="Type"/>
+            <input class="formInput" type="text" id="prop_dmg" name="type" ng-model="vm.prop_dmg" placeholder="Type"/>
+            <input class="formInput" type="text" id="prop_dmg_exp" name="type" ng-model="vm.prop_dmg_exp" placeholder="Type"/>
+            <input class="formInput" type="text" id="crop_dmg" name="type" ng-model="vm.crop_dmg" placeholder="Type"/>
+            <input class="formInput" type="text" id="crop_dmg_exp" name="type" ng-model="vm.crop_dmg_exp" placeholder="Type"/>
+            <input class="formInput" type="ta" id="remarks" name="type" ng-model="vm.remarks" placeholder="Type"/>
+
+            <input class="formInput" type="text" id="latitude" name="type" ng-model="vm.latitude" placeholder="Type"/>
+            <input class="formInput" type="text" id="longitude" name="type" ng-model="vm.longitude" placeholder="Type"/>
+
+            <input id="form-date-2" class="formInput" class="date" type="dateTime" id="dateTime" name="to-date" placeholder="to" min="1950-01-01"
+                   max="2011-12-31" ng-model="vm.dateTime"/>
+
+            <div class="formInput formSearch" ng-click="update($event)">Search</div>
+        </div>
+    </form>
+
+</div>-->
 <!--
 
         &lt;!&ndash; <div>
