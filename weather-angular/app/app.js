@@ -1,9 +1,18 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-var weatherApp = angular.module('weatherApp', ['datePicker'])
+var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'])
     .controller('SearchCtrl', ['$scope', '$http',
         function ($scope, $http) {
+
+            angular.extend($scope, {
+                london: {
+                    lat: 51.505,
+                    lng: -0.09,
+                    zoom: 4
+                }
+            });
+
 
             var processEvents = function (response) {
                 var results = response.data.map(function (e) {

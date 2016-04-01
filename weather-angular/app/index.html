@@ -18,6 +18,9 @@
     <script src="/bower_components/angular-datepicker/dist/angular-datepicker.min.js"></script>
     <script src="app.js"></script>
 
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+    <script src="/js/angular-leaflet-directive.min.js"></script>
+
 </head>
 
 <body ng-app="weatherApp" ng-controller="SearchCtrl">
@@ -48,6 +51,9 @@
 
 
 <div id="search-result">
+    <div id="map">
+        <leaflet></leaflet>
+    </div>
     <div>
         <result-item ng-repeat="result in results" item="result"></result-item>
     </div>

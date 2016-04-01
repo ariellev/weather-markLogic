@@ -14,7 +14,6 @@ public class GeoQueryParser {
     private double lat, lon;
     private int radius = 50;
     private String placeName;
-    private boolean isGeoQuery = true;
     private String geoQuery;
 
     private static final Logger logger = LoggerFactory.getLogger(GeoQueryParser.class);
@@ -35,11 +34,14 @@ public class GeoQueryParser {
     }
 
     private void parse(IPlaceBuilder placeBuilder, String query) {
-        String geoQ = extractGeoQuery(query);
+        geoQuery = extractGeoQuery(query);
+        if (geoQuery == null)
+            return;
+
         String pattern = "(?i)in\\s*\\(\\s*([0-9]+)\\s*,\\s*([0-9\\.\\-]+)\\s*,\\s*([0-9\\.\\-]+)\\s*\\)";
         Pattern r = Pattern.compile(pattern);
 
-        String[] params = geoQ.split(",");
+        String[] params = geoQuery.split(",");
         try {
             radius = Integer.parseInt(params[0]);
             lat = roundMe(params[1]);
@@ -88,7 +90,7 @@ public class GeoQueryParser {
     }
 
     public boolean isGeoQuery() {
-        return isGeoQuery;
+        return geoQuery != null;
     }
 
     public String getGeoQuery() {

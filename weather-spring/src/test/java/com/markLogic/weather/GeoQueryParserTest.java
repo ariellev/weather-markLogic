@@ -73,10 +73,9 @@ public class GeoQueryParserTest {
         Assert.assertEquals("New York City", parser.extractGeoQuery(q));
     }
 
-    //@Test
-    public void testGetGeoQuery() {
-        MockPlaceBuilder mockPlaceBuilder = new MockPlaceBuilder("{\"place\":\"New York City\", \"state\":\"New York\", \"state_code\":\"NY\", \"latitude\":40.7069, \"longitude\":-73.6731}");
-        GeoQueryParser parser = new GeoQueryParser(mockPlaceBuilder, "(in 80, New York City) AND injuries GT 50");
-        Assert.assertTrue(parser.isGeoQuery());
+    @Test
+    public void testEmptyQuery() {
+        GeoQueryParser parser = new GeoQueryParser("");
+        Assert.assertFalse(parser.isGeoQuery());
     }
 }
