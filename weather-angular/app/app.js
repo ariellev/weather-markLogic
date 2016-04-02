@@ -3,9 +3,17 @@
 var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive', 'ngSanitize'])
     .controller('SearchCtrl', ['$filter', '$scope', '$http', 'leafletData',
         function ($filter, $scope, $http, leafletData) {
+            // benchmark variables
+            var before, after;
+
+            // request controllers
+            $scope.pageNum = 0;
+            $scope.pageLength = 30;
+
             $scope.noDataStyle = {'display': 'none'};
             $scope.mapStyle = {'visibility': 'hidden'};
             $scope.dataStyle = {'display': 'none'};
+            $scope.merticsStyle = {'display': 'none'};
             $scope.searchingStyle = {'display': 'none'};
             $scope.highlight = {'color': 'red'};
 
@@ -42,8 +50,7 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                     }
                 },
 
-                markers: {
-                },
+                markers: {},
 
                 geojson: {
                     data: geoData,
@@ -61,8 +68,8 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
             });
 
 
-            var processData = function(response) {
-                var min_lat = Number.MAX_VALUE, min_lng = Number.MAX_VALUE, max_lat = Number.MIN_VALUE, max_lng= -Number.MAX_VALUE;
+            var processData = function (response) {
+                var min_lat = Number.MAX_VALUE, min_lng = Number.MAX_VALUE, max_lat = Number.MIN_VALUE, max_lng = -Number.MAX_VALUE;
 
                 var geoFeatures = response.data.map(function (e) {
                     e.latitude = parseFloat(e.latitude);
@@ -78,14 +85,14 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                         "type": "Feature",
                         "geometry": {
                             "type": "Point",
-                            "coordinates": [ e.longitude, e.latitude]
+                            "coordinates": [e.longitude, e.latitude]
                         },
                         "properties": {
                             "GPSId": e.id,
                             "DateTime": "7/3/2013 4:47:15 PM",
                             "GPSUserName": e.id,
                             "GPSUserColor": "#FF5500",
-                            "description" : "<b>" + e.event_type + "</b><br/>" + $filter('date')(e.date, 'longDate')
+                            "description": "<b>" + e.event_type + "</b><br/>" + $filter('date')(e.date, 'longDate')
                         }
                     }
                 });
@@ -114,19 +121,21 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 //console.log(JSON.stringify(response));
                 $scope.results = response.data;
 
+                $scope.merticsStyle = {'display': 'inline'};
                 $scope.dataStyle = {'display': 'inline'};
                 $scope.noDataStyle = {'display': 'none'};
                 $scope.mapStyle = {'visibility': 'visible'};
-
-
+                $scope.totalResults = response.data.length;
+                $scope.totalSeconds = (after - before) / 1000;
             };
 
-            var processNoData = function(response) {
+            var processNoData = function (response) {
                 $scope.dataStyle = {'display': 'none'};
                 $scope.noDataStyle = {'display': 'inline'};
             };
 
             var processEvents = function (response) {
+                after = Date.now();
                 $scope.searchingStyle = {'display': 'none'};
 
                 if (response.data.length > 0) {
@@ -144,23 +153,51 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
             };
 
             $scope.search = function (event) {
-                if (event.keyCode === 13) {
-                    console.log('performing search..');
-                    $scope.dataStyle = {'display': 'none'};
-                    $scope.noDataStyle = {'display': 'none'};
-                    $scope.searchingStyle = {'display': 'inline'};
-                    $scope.mapStyle = {'visibility': 'hidden'};
+                console.log('event.target.id=' + event.target.id);
+                console.log('event.keyCode=' + event.keyCode);
 
+                if (event.keyCode === 13 || event.target.id == "searchButton") {
+                    $scope.pageNum = 0;
                     var str = JSON.stringify($scope.form);
                     console.log('data=' + str);
                     var data = JSON.parse(str);
                     data.fromDate = $scope.form.fromDate.getTime();
                     data.toDate = $scope.form.toDate.getTime();
+                    $scope.payload = data;
 
-                    var query = $scope.form.query.trim();
-                    //$http.get('response.json').
-                    $http.post('http://localhost:8080/weather/v1/events/search/?pageLength=30', data).
-                    then(processEvents);
+                    $scope.mapStyle = {'visibility': 'hidden'};
+                    $scope.merticsStyle = {'display': 'none'};
+
+                    performSearch(data, $scope.pageNum, $scope.pageLength);
+                }
+            };
+
+            var performSearch = function (payload, pageN, pageL) {
+                console.log('performing search..');
+                $scope.dataStyle = {'display': 'none'};
+                $scope.noDataStyle = {'display': 'none'};
+                $scope.searchingStyle = {'display': 'inline'};
+
+
+                before = Date.now();
+                //$http.get('response.json').
+                $http.post('http://localhost:8080/weather/v1/events/search/?pageLength=' + pageL + '&pageNum=' + pageN, payload).
+                then(processEvents);
+            };
+
+            $scope.nextPage = function (event) {
+                if ($scope.totalResults == $scope.pageLength) {
+                    $scope.pageNum++;
+                    console.log("nextPage, pageNum=" + $scope.pageNum);
+                    performSearch($scope.payload, $scope.pageNum, $scope.pageLength);
+                }
+            };
+
+            $scope.previousPage = function (event) {
+                if ($scope.pageNum > 0) {
+                    $scope.pageNum--;
+                    console.log("nextPage, pageNum=" + $scope.pageNum);
+                    performSearch($scope.payload, $scope.pageNum, $scope.pageLength);
                 }
             };
 

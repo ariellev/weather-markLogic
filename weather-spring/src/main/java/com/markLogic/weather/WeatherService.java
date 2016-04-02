@@ -122,7 +122,9 @@ public class WeatherService implements IWeatherService {
             for (MatchDocumentSummary docSummary : docSummaries) {
                 // read constituent documents
                 Event event = eventBuilder.getEvent(docSummary.getUri());
-                event.setSnippet(makeSnippet(docSummary));
+                if (!event.getRemarks().isEmpty()) {
+                    event.setSnippet(makeSnippet(docSummary));
+                }
                 logger.info("event.snippet={}", event.getSnippet());
                 events[i] = event;
                 i++;

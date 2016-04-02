@@ -163,6 +163,7 @@ video#bgvid {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     line-height: 57px;
+    cursor: pointer;
 }
 
 #form-date-1 {
@@ -189,7 +190,6 @@ video#bgvid {
 
 #search-box {
     width: 500px;
-
     outline: 0;
 }
 
@@ -220,4 +220,14 @@ video#bgvid {
 
 .highlight {
     color: red;
+}
+
+.pageButton {
+    background: none;
+    color: white;
+    margin-left: 5px;
+    position:relative;
+    float: left;
+    cursor: pointer;
+    text-decoration: underline;
 }

@@ -1,6 +1,14 @@
 {
   "options": {
-
+    "sort-order": [
+      { "direction": "ascending",
+        "type": "xs:date",
+        "json-property": "date"
+      },
+      { "direction": "ascending",
+        "score": null
+      }
+    ],
     "constraint": [
       {
         "name": "geo",
@@ -83,6 +91,12 @@
         "name": "state",
         "value": {
           "json-property": "state"
+        }
+      },
+      {
+        "name": "remarks",
+        "word": {
+          "json-property": "remarks"
         }
       }
     ]
