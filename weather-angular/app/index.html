@@ -18,9 +18,9 @@
     <script src="/bower_components/angular-datepicker/dist/angular-datepicker.min.js"></script>
     <script src="app.js"></script>
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
-    <script src="/js/angular-leaflet-directive.min.js"></script>
-
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-leaflet-directive/0.10.0/angular-leaflet-directive.js"></script>
 </head>
 
 <body ng-app="weatherApp" ng-controller="SearchCtrl">
@@ -51,9 +51,14 @@
 
 
 <div id="search-result">
-    <div id="map">
-        <leaflet></leaflet>
+    <div id="noData" ng-style="noDataStyle">
+        <h3>No data found</h3>
     </div>
+
+    <div id="map" ng-style="mapStyle">
+        <leaflet maxbounds="maxbounds" tiles="tiles" geojson="geojson" defaults="defaults" width="100%" height="280px"></leaflet>
+    </div>
+
     <div>
         <result-item ng-repeat="result in results" item="result"></result-item>
     </div>

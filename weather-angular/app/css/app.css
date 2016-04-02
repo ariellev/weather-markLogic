@@ -8,6 +8,7 @@ body {
     /*font-family: "HelveticaNeueW01-Thin";*/
     font-family: "helvetica";
     font-size: 20px;
+    border: 1px solid #eee;
 }
 
 video#bgvid {
@@ -34,12 +35,10 @@ video#bgvid {
 
 #search-result {
     overflow-y: auto;
-    padding-left: 60px;
-    margin: 20px 0 100px 0;
-    width: 1000px;
+    margin: 10px 0 100px 0;
+    width: 100%;
     position: absolute;
-
-    top: 400px;
+    top: 450px;
 }
 
 #heading {
@@ -168,6 +167,10 @@ video#bgvid {
     top: 20px;
     -webkit-box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
     box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+}
+
+#map {
+
 }
 /*
 video#bgvid {
