@@ -1,21 +1,11 @@
 <div class="result-item">
-    <div class="event-item">
-        <div class="badge">
+        <div class="badge flex-item">
             <div class="type"><b>{{item.event_type}}</b></div>
-            <div style="font-size : 18px;">{{item.date | date : format : timezone}}</div>
+            <div style="font-size : 0.7em;">{{item.date | date : format : timezone}} • {{item.state}} • {{item.latitude | number}}, {{item.longitude | number}}</div>
+            <div style="font-size : 0.7em;">{{item.fatalities | number}} fatalities • {{item.injuries | number}} injuries</div>
+            <div style="font-size : 0.7em;">{{item.total_prop | number}} properties • {{item.total_crop | number}} crops</div>
         </div>
-        <div class="data" style="width: 100px">
-            <div>{{item.fatalities | number}} fatalities</div>
-            <div>{{item.injuries | number}} injuries</div>
-            <div class="data remarks">{{item.remarks}}</div>
+        <div class="remarks flex-item">
+            <div>{{item.remarks}}</div>
         </div>
-        <div class="data" style="width: 170px">
-            <div>{{item.total_prop | number}} properties</div>
-            <div>{{item.total_crop | number}} crops</div>
-        </div>
-        <div class="data">
-            <div>{{item.latitude | number}}, {{item.longitude | number}}</div>
-            <div>{{item.state}}</div>
-        </div>
-    </div>
 </div>
