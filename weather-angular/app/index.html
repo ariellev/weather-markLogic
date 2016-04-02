@@ -10,7 +10,7 @@
     <script src="/bower_components/html5-boilerplate/dist/js/vendor/jquery-1.11.3.min.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-route/angular-route.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.3/angular-sanitize.js"></script>
     <link href="/bower_components/angular-datepicker/dist/angular-datepicker.css" rel="stylesheet" type="text/css"/>
 
     <script src="/bower_components/angular-datepicker/dist/angular-datepicker.min.js"></script>
@@ -51,11 +51,10 @@
             </form>
         </div>
         <div id="search-result" class="flex-container">
-            <div id="noData" ng-style="noDataStyle" class="result-item flex-item">
-                No events were found.
-            </div>
+            <div id="noData" ng-style="noDataStyle" class="result-item flex-item">No events were found.</div>
+            <div id="searching" ng-style="searchingStyle" class="flex-item">Please wait..</div>
             <leaflet ng-style="mapStyle" class="map flex-item" maxbounds="maxbounds" tiles="tiles" geojson="geojson" defaults="defaults" width="100%" height="180px"></leaflet>
-            <result-item ng-repeat="result in results" item="result" class="flex-item"></result-item>
+            <result-item ng-repeat="result in results" item="result" class="flex-item" ng-style="dataStyle"></result-item>
         </div>
     </div>
 </body>

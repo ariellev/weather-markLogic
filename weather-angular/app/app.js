@@ -1,10 +1,13 @@
 'use strict';
 // Declare app level module which depends on views, and components
-var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'])
-    .controller('SearchCtrl', ['$scope', '$http',
-        function ($scope, $http) {
-            $scope.mapStyle = {'visibility': 'hidden'};
+var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive', 'ngSanitize'])
+    .controller('SearchCtrl', ['$filter', '$scope', '$http', 'leafletData',
+        function ($filter, $scope, $http, leafletData) {
             $scope.noDataStyle = {'display': 'none'};
+            $scope.mapStyle = {'visibility': 'hidden'};
+            $scope.dataStyle = {'display': 'none'};
+            $scope.searchingStyle = {'display': 'none'};
+            $scope.highlight = {'color': 'red'};
 
             var geoData = {
                 "type": "FeatureCollection",
@@ -20,29 +23,12 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 fillOpacity: 0.8
             };
 
-            var mainMarker = {
-                lat: 51.505,
-                lng: -0.09,
-                focus: true,
-                message: "Hey, drag me if you want",
-                draggable: true
-            };
-
-            var london= {
-                lat: 51.505,
-                    lng: -0.09,
-                    zoom: 4
-            };
-            var jerusalem =  {
-                lat: 31.780109,
-                    lng: 35.200642,
-                    zoom: 1
-            };
             var usa = {
                 lat: 45.19,
                 lng: -96.27,
                 zoom: 6
             };
+
             angular.extend($scope, {
 
                 center: usa,
@@ -63,11 +49,14 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                     data: geoData,
                     pointToLayer: function (feature, latlng) {
                         return L.circleMarker(latlng, geojsonMarkerOptions);
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(feature.properties.description);
                     }
                 },
 
                 defaults: {
-                    scrollWheelZoom: false
+                    scrollWheelZoom: true
                 }
             });
 
@@ -95,7 +84,8 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                             "GPSId": e.id,
                             "DateTime": "7/3/2013 4:47:15 PM",
                             "GPSUserName": e.id,
-                            "GPSUserColor": "#FF5500"
+                            "GPSUserColor": "#FF5500",
+                            "description" : "<b>" + e.event_type + "</b><br/>" + $filter('date')(e.date, 'longDate')
                         }
                     }
                 });
@@ -124,17 +114,21 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 //console.log(JSON.stringify(response));
                 $scope.results = response.data;
 
-                $scope.mapStyle = {'visibility': 'visible'};
+                $scope.dataStyle = {'display': 'inline'};
                 $scope.noDataStyle = {'display': 'none'};
+                $scope.mapStyle = {'visibility': 'visible'};
+
 
             };
 
             var processNoData = function(response) {
-                $scope.mapStyle = {'visibility': 'hidden'};
+                $scope.dataStyle = {'display': 'none'};
                 $scope.noDataStyle = {'display': 'inline'};
             };
 
             var processEvents = function (response) {
+                $scope.searchingStyle = {'display': 'none'};
+
                 if (response.data.length > 0) {
                     processData(response);
                 } else processNoData(response);
@@ -149,13 +143,14 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 'eventType': ""
             };
 
-            /*            $http.get('http://localhost:8080/weather/v1/events/TORNADO/?').
-             then(processEvents);*/
-
-
             $scope.search = function (event) {
                 if (event.keyCode === 13) {
                     console.log('performing search..');
+                    $scope.dataStyle = {'display': 'none'};
+                    $scope.noDataStyle = {'display': 'none'};
+                    $scope.searchingStyle = {'display': 'inline'};
+                    $scope.mapStyle = {'visibility': 'hidden'};
+
                     var str = JSON.stringify($scope.form);
                     console.log('data=' + str);
                     var data = JSON.parse(str);
@@ -163,10 +158,8 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                     data.toDate = $scope.form.toDate.getTime();
 
                     var query = $scope.form.query.trim();
-                    //$http.post('http://localhost:8080/weather/v1/events/search/?', data).
-                    //then(processEvents);
-
-                    $http.get('response.json').
+                    //$http.get('response.json').
+                    $http.post('http://localhost:8080/weather/v1/events/search/?pageLength=30', data).
                     then(processEvents);
                 }
             };

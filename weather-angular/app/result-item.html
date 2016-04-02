@@ -6,6 +6,6 @@
             <div style="font-size : 0.7em;">{{item.total_prop | number}} properties • {{item.total_crop | number}} crops</div>
         </div>
         <div class="remarks flex-item">
-            <div>{{item.remarks}}</div>
+            <div ng-bind-html="item.snippet"></div>
         </div>
 </div>

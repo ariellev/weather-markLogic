@@ -21,7 +21,9 @@ public class GeoQueryParserTest {
 
         @Override
         public Place getPlace(String placeName) {
-            return this.place;
+            if (placeName.equalsIgnoreCase("New York City")) {
+                return this.place;
+            } else return null;
         }
 
         @Override
@@ -32,6 +34,15 @@ public class GeoQueryParserTest {
         }
     }
 
+    @Test
+    public void testNoGeoQuery() {
+        String q = "in new york city and injuries GT 20";
+        MockPlaceBuilder mockPlaceBuilder = new MockPlaceBuilder("{\"place\":\"New York City\", \"state\":\"New York\", \"state_code\":\"NY\", \"latitude\":40.7069, \"longitude\":-73.6731}");
+        GeoQueryParser parser = new GeoQueryParser(mockPlaceBuilder, q);
+        Assert.assertFalse(parser.isGeoQuery());
+        Assert.assertNull(parser.getGeoQuery());
+        Assert.assertEquals("in new york city and injuries GT 20", parser.getNonGeoQuery());
+    }
     @Test
     public void testSimpleGeo() {
         GeoQueryParser parser = new GeoQueryParser("IN (500, 30.4, -88.12)");
@@ -62,15 +73,22 @@ public class GeoQueryParserTest {
 
     @Test
     public void testExtractGeoQuery() {
-        String q = "before in 80, New York City)  AND injuries GT 50";
+        String q = "before OR in (80, New York City)  AND injuries GT 50";
         GeoQueryParser parser = new GeoQueryParser(q);
         Assert.assertEquals("80, New York City", parser.extractGeoQuery(q));
+        Assert.assertEquals("before OR injuries GT 50", parser.extractNonGeoQuery(q));
 
-        q = "before IN (500, 30.4, -88.12) and something else";
+        q = "before and IN (500, 30.4, -88.12) or something else";
         Assert.assertEquals("500, 30.4, -88.12", parser.extractGeoQuery(q));
+        Assert.assertEquals("before and something else", parser.extractNonGeoQuery(q));
 
-        q = "in New York City";
+        q = "in (New York City) or injuries GT 10";
         Assert.assertEquals("New York City", parser.extractGeoQuery(q));
+        Assert.assertEquals("injuries GT 10", parser.extractNonGeoQuery(q));
+
+        q = "in (New York City) and injuries GT 10";
+        Assert.assertEquals("New York City", parser.extractGeoQuery(q));
+        Assert.assertEquals("injuries GT 10", parser.extractNonGeoQuery(q));
     }
 
     @Test

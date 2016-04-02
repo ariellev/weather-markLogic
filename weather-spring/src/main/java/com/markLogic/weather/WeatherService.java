@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.marklogic.client.DatabaseClient;
 import com.marklogic.client.DatabaseClientFactory;
 import com.marklogic.client.document.JSONDocumentManager;
-import com.marklogic.client.io.*;
-import com.marklogic.client.query.MatchDocumentSummary;
-import com.marklogic.client.query.QueryDefinition;
-import com.marklogic.client.query.QueryManager;
-import com.marklogic.client.query.StringQueryDefinition;
+import com.marklogic.client.io.DocumentMetadataHandle;
+import com.marklogic.client.io.InputStreamHandle;
+import com.marklogic.client.io.SearchHandle;
+import com.marklogic.client.io.StringHandle;
+import com.marklogic.client.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,6 +88,29 @@ public class WeatherService implements IWeatherService {
         return parseEvents(resultsHandle);
     }
 
+    private String makeSnippet(MatchDocumentSummary docSummary) {
+        String snippet = "";
+        // get the list of match locations for this result
+        MatchLocation[] locations = docSummary.getMatchLocations();
+        System.out.println("Matched " + locations.length + " locations in " + docSummary.getUri() + ":");
+
+        for (MatchLocation location : locations) {
+
+            // iterate over the snippets at a match location
+            for (MatchSnippet match : location.getSnippets()) {
+                boolean isHighlighted = match.isHighlighted();
+
+                if (isHighlighted) {
+                    snippet += String.format(" <span class=\"highlight\">%s</span>", match.getText());
+                } else snippet += match.getText();
+
+            }
+        }
+
+        return snippet;
+    }
+
+
     private Event[] parseEvents(SearchHandle resultsHandle) {
         // all matched documents
         MatchDocumentSummary[] docSummaries = resultsHandle.getMatchResults();
@@ -99,6 +122,8 @@ public class WeatherService implements IWeatherService {
             for (MatchDocumentSummary docSummary : docSummaries) {
                 // read constituent documents
                 Event event = eventBuilder.getEvent(docSummary.getUri());
+                event.setSnippet(makeSnippet(docSummary));
+                logger.info("event.snippet={}", event.getSnippet());
                 events[i] = event;
                 i++;
             }
@@ -107,20 +132,25 @@ public class WeatherService implements IWeatherService {
     }
 
     @Override
-    public Event[] searchEvents(String queryString, Long fromDate, Long toDate, String type, String state, long start, int pageLength) {
+    public Event[] searchEvents(String queryString, Long fromDate, Long toDate, String type, String state,
+                                int pageNum, int pageLength) {
         logger.info("searchEvents, queryString={}", queryString);
         logger.info("searchEvents, from={}, to={}", new Date(fromDate), new Date(toDate));
         logger.info("searchEvents, type={}, state={}", type, state);
-        logger.info("searchEvents, start={}, pageLength={}", start, pageLength);
+
+        int start = pageLength * (pageNum - 1) + 1;
+        logger.info("searchEvents, pageNum={}, pageLength={}, start={}", pageNum, pageLength, start);
 
         Set<String> query = new HashSet<String>();
         StringJoiner joiner = new StringJoiner(" AND ");
 
-
         GeoQueryParser geoQueryParser = new GeoQueryParser(placeBuilder, queryString);
         if (geoQueryParser.isGeoQuery()) {
             joiner.add(geoQueryParser.format());
-        } else if (!queryString.trim().isEmpty()) {
+            queryString = geoQueryParser.getNonGeoQuery();
+        }
+
+        if (!queryString.trim().isEmpty()) {
             joiner.add(queryString);
         }
 
@@ -135,41 +165,19 @@ public class WeatherService implements IWeatherService {
         String qString = joiner.toString();
         logger.info("searchEvents, qString={}", qString);
 
-        QueryDefinition querydef;
-
-        StringQueryDefinition qd = queryMgr.newStringDefinition(EVENT_OPTIONS);
-        qd.setCriteria(qString);
-        querydef = qd;
+        queryMgr.setPageLength(pageLength);
+        StringQueryDefinition querydef = queryMgr.newStringDefinition(EVENT_OPTIONS);
+        querydef.setCriteria(qString);
 
         String collection = "all-events";
         querydef.setCollections(collection);
-        SearchHandle resultsHandle = queryMgr.search(querydef, new SearchHandle());
+        SearchHandle resultsHandle = queryMgr.search(querydef, new SearchHandle(), start);
 
         logger.info("Matched {} documents in collection '{}'", resultsHandle.getTotalResults(), querydef.getCollections());
 
         Event[] events = parseEvents(resultsHandle);
         return events;
     }
-
-    @Override
-    public Event[] searchEventsByPlace(String place, Long fromDate, Long toDate, String type, String state, long start, int pageLength) {
-        logger.info("searchEventsByPlace, place={}", place);
-        String rawJSONQuery = "\"{\"$query\": { \"place\": \"" + place + "\" }}";
-        StringHandle rawHandle = new StringHandle();
-        rawHandle.withFormat(Format.JSON).set(rawJSONQuery);
-
-        QueryDefinition querydef = queryMgr.newRawQueryByExampleDefinition(rawHandle);
-        querydef.setCollections("raw-metadata");
-
-        SearchHandle resultsHandle = queryMgr.search(querydef, new SearchHandle());
-
-        logger.info("Matched {} documents in collection '{}'", resultsHandle.getTotalResults(), querydef.getCollections());
-
-        Event[] events = parseEvents(resultsHandle);
-
-        return new Event[0];
-    }
-
 
     private String getUri(String id) {
         return "/events/" + id;

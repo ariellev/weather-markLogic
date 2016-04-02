@@ -21,7 +21,7 @@ public class PlaceBuilder implements IPlaceBuilder {
 
     @Override
     public Place getPlace(String placeName) {
-        String uri = "/places/" + placeName;
+        String uri = "/places/" + placeName.trim().toLowerCase();
         logger.info("getting place, uri={}", uri);
         String json = docMgr.read(uri, new StringHandle()).get();
         return parse(json);

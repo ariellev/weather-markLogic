@@ -56,6 +56,7 @@ public class Event {
 
     private String state;
     private Integer year;
+    private String snippet;
 
     public Event() {
 
@@ -232,6 +233,15 @@ public class Event {
                 ", time='" + time + '\'' +
                 ", state='" + state + '\'' +
                 ", year=" + year +
+                ", snippet='" + snippet + '\'' +
                 '}';
+    }
+
+    public void setSnippet(String snippet) {
+        this.snippet = snippet;
+    }
+
+    public String getSnippet() {
+        return snippet;
     }
 }

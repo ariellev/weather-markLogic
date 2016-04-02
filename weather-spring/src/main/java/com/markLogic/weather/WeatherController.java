@@ -57,9 +57,12 @@ public class WeatherController {
     }
 
     @RequestMapping(value = "/search/**", method = RequestMethod.POST)
-    Event[] searchEvents(@RequestBody SearchPayload payload) {
+    Event[] searchEvents(@RequestBody SearchPayload payload,
+                         @RequestParam(value = "pageLength", required = false, defaultValue = "10") int pageLength,
+                         @RequestParam(value = "start", required = false, defaultValue = "0") int pageNum) {
         logger.info("searchEvents, payload=" + payload);
-        Event[] events = service.searchEvents(payload.getQuery(), payload.getFromDate(), payload.getToDate(), payload.getEventType(), payload.getState(), 0, 10);
+        logger.info("searchEvents, pageNum={}, pageLength={}, ", pageNum, pageLength);
+        Event[] events = service.searchEvents(payload.getQuery(), payload.getFromDate(), payload.getToDate(), payload.getEventType(), payload.getState(), pageNum, pageLength);
         return events;
     }
 
