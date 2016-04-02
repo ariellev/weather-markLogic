@@ -11,9 +11,10 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
             $scope.pageLength = 30;
 
             $scope.noDataStyle = {'display': 'none'};
+            // $scope.mapStyle = {'visibility': 'hidden'};
             $scope.mapStyle = {'visibility': 'hidden'};
             $scope.dataStyle = {'display': 'none'};
-            $scope.merticsStyle = {'display': 'none'};
+            $scope.merticsStyle = {'visibility': 'hidden'};
             $scope.searchingStyle = {'display': 'none'};
             $scope.highlight = {'color': 'red'};
 
@@ -23,7 +24,7 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
             };
 
             var geojsonMarkerOptions = {
-                radius: 10,
+                radius: 3,
                 fillColor: 'red',
                 color: 'white',
                 weight: 1,
@@ -37,18 +38,23 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 zoom: 6
             };
 
+            var mapbox = {
+                name: 'Mapbox',
+                url: 'https://api.tiles.mapbox.com/v4/{mapid}/{z}/{x}/{y}.png?access_token={apikey}',
+                type: 'xyz',
+                options: {
+                    /*                    apikey: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw',
+                     mapid: 'mapbox.streets'*/
+                    apikey: 'pk.eyJ1IjoiYXJpZWxsZXYwMiIsImEiOiIwZGVmOWI1NmYzMzE3ZmI3MWUwNmQzNDk1NDMyYzE5OSJ9.BTrDAcc81lL5FReG_ljgag',
+                    mapid: 'ariellev02.md09o8kh',
+                    attribution: 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
+                }
+            };
+
             angular.extend($scope, {
 
                 center: usa,
-                tiles: {
-                    name: 'Mapbox',
-                    url: 'https://api.tiles.mapbox.com/v4/{mapid}/{z}/{x}/{y}.png?access_token={apikey}',
-                    type: 'xyz',
-                    options: {
-                        apikey: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw',
-                        mapid: 'mapbox.streets'
-                    }
-                },
+                tiles: mapbox,
 
                 markers: {},
 
@@ -63,7 +69,7 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 },
 
                 defaults: {
-                    scrollWheelZoom: true
+                    scrollWheelZoom: false
                 }
             });
 
@@ -89,7 +95,6 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                         },
                         "properties": {
                             "GPSId": e.id,
-                            "DateTime": "7/3/2013 4:47:15 PM",
                             "GPSUserName": e.id,
                             "GPSUserColor": "#FF5500",
                             "description": "<b>" + e.event_type + "</b><br/>" + $filter('date')(e.date, 'longDate')
@@ -105,23 +110,35 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 $scope.geojson.data = geoData;
                 console.log(JSON.stringify(geoData));
 
+
                 // max_lng = -101.4;
-                $scope.maxbounds = {
-                    southWest: {
-                        lat: min_lat,
-                        lng: min_lng
-                    },
-                    northEast: {
-                        lat: max_lat,
-                        lng: max_lng
-                    }
+                var maxbounds = {
+                    southWest: L.GeoJSON.coordsToLatLng([min_lng, min_lat]),
+                    northEast: L.GeoJSON.coordsToLatLng([max_lng, max_lat])
                 };
 
-                console.log(JSON.stringify($scope.maxbounds));
-                //console.log(JSON.stringify(response));
-                $scope.results = response.data;
+                var southWest = L.latLng(min_lat, min_lng),
+                    northEast = L.latLng(max_lat, max_lng),
+                    bounds = L.latLngBounds(southWest, northEast);
 
-                $scope.merticsStyle = {'display': 'inline'};
+                console.log(JSON.stringify(bounds));
+
+                leafletData.getMap().then(function (map) {
+                    console.log("leafletData.getMap");
+                    console.log(JSON.stringify(bounds));
+
+                    map.fitBounds(bounds);
+                });
+
+                //console.log(JSON.stringify(response));
+                $scope.results = response.data.map(function (e) {
+                    if ((typeof e.snippet === 'undefined') || e.snippet.length < "<span class='highlight'></span>".length + 20) {
+                        e.snippet = e.remarks;
+                    }
+                    return e;
+                });
+
+                $scope.merticsStyle = {'visibility': 'visible'};
                 $scope.dataStyle = {'display': 'inline'};
                 $scope.noDataStyle = {'display': 'none'};
                 $scope.mapStyle = {'visibility': 'visible'};
@@ -165,8 +182,7 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                     data.toDate = $scope.form.toDate.getTime();
                     $scope.payload = data;
 
-                    $scope.mapStyle = {'visibility': 'hidden'};
-                    $scope.merticsStyle = {'display': 'none'};
+                    $scope.merticsStyle = {'visibility': 'hidden'};
 
                     performSearch(data, $scope.pageNum, $scope.pageLength);
                 }

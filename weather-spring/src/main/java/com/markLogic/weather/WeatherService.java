@@ -85,10 +85,10 @@ public class WeatherService implements IWeatherService {
         //StringHandle resultsHandle = queryMgr.search(query, new StringHandle().withFormat(Format.JSON));
 
         SearchHandle resultsHandle = queryMgr.search(query, new SearchHandle());
-        return parseEvents(resultsHandle);
+        return parseEvents(resultsHandle, type);
     }
 
-    private String makeSnippet(MatchDocumentSummary docSummary) {
+    private String makeSnippet(MatchDocumentSummary docSummary, String excludedSnippets) {
         String snippet = "";
         // get the list of match locations for this result
         MatchLocation[] locations = docSummary.getMatchLocations();
@@ -99,11 +99,12 @@ public class WeatherService implements IWeatherService {
             // iterate over the snippets at a match location
             for (MatchSnippet match : location.getSnippets()) {
                 boolean isHighlighted = match.isHighlighted();
-
-                if (isHighlighted) {
-                    snippet += String.format(" <span class=\"highlight\">%s</span>", match.getText());
-                } else snippet += match.getText();
-
+                String text = match.getText();
+                if (!excludedSnippets.contains(text)) {
+                    if (isHighlighted) {
+                        snippet += String.format(" <span class=\"highlight\">%s</span>", text);
+                    } else snippet += text;
+                }
             }
         }
 
@@ -111,7 +112,7 @@ public class WeatherService implements IWeatherService {
     }
 
 
-    private Event[] parseEvents(SearchHandle resultsHandle) {
+    private Event[] parseEvents(SearchHandle resultsHandle, String excludedSnippets) {
         // all matched documents
         MatchDocumentSummary[] docSummaries = resultsHandle.getMatchResults();
         logger.info("Listing " + docSummaries.length + " documents");
@@ -123,7 +124,7 @@ public class WeatherService implements IWeatherService {
                 // read constituent documents
                 Event event = eventBuilder.getEvent(docSummary.getUri());
                 if (!event.getRemarks().isEmpty()) {
-                    event.setSnippet(makeSnippet(docSummary));
+                    event.setSnippet(makeSnippet(docSummary, excludedSnippets));
                 }
                 logger.info("event.snippet={}", event.getSnippet());
                 events[i] = event;
@@ -177,7 +178,7 @@ public class WeatherService implements IWeatherService {
 
         logger.info("Matched {} documents in collection '{}'", resultsHandle.getTotalResults(), querydef.getCollections());
 
-        Event[] events = parseEvents(resultsHandle);
+        Event[] events = parseEvents(resultsHandle, type);
         return events;
     }
 

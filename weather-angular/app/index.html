@@ -26,11 +26,12 @@
         <source src='videos/winter.webm' type=video/webm>
         <source src='videos/winter.mp4' type=video/mp4>
     </video>
+    <img id="logo" src="logo-marklogic.svg" style="color:white; float:left; position:relative; width: 120px"/>
 
     <div class="flex-container">
         <div id="header" class="flex-item">
             <h1>Severe Weather Events</h1>
-            <img src="logo-marklogic.svg" style="color:white; float:left; position:relative; width: 120px"/>
+            <h3>NOAA Storm Dataset. USA 1950 - 2011</h3>
         </div>
         <div class="flex-item">
             <form id="mainForm" name="mainForm" ng-keypress="search($event)">
@@ -56,7 +57,7 @@
                 <div ng-click="previousPage($event)" class="pageButton">previous</div>
                 <div ng-click="nextPage($event)" class="pageButton">next</div>
             </div>
-            <leaflet ng-style="mapStyle" class="map flex-item" maxbounds="maxbounds" tiles="tiles" geojson="geojson" defaults="defaults" width="100%" height="180px"></leaflet>
+            <leaflet lf-center="center" ng-style="mapStyle" class="map flex-item" tiles="tiles" geojson="geojson" defaults="defaults" width="100%" height="180px"></leaflet>
             <div id="noData" ng-style="noDataStyle" class="result-item flex-item">No events were found.</div>
             <div id="searching" ng-style="searchingStyle" class="flex-item">Please wait..</div>
             <result-item ng-repeat="result in results" item="result" class="flex-item" ng-style="dataStyle"></result-item>

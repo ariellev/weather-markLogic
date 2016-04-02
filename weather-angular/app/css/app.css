@@ -9,6 +9,8 @@ body {
     font-family: "helvetica";
     font-size: 20px;
     background: #0a1126;
+    letter-spacing: .1rem;
+
 }
 
 .flex-container {
@@ -36,6 +38,16 @@ body {
 #map {
     border-top: dotted 1px lightseagreen;
     border-bottom: dotted 1px lightseagreen;
+}
+
+#logo {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+#header {
+    margin-top: 40px;
 }
 
 #header > h1 {
@@ -72,7 +84,7 @@ video#bgvid {
 
 #search-result {
     overflow-y: auto;
-    margin: 50px 0 100px 0;
+    margin: -20px 0 100px 0;
 }
 
 #heading {
