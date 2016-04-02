@@ -8,16 +8,60 @@ body {
     /*font-family: "HelveticaNeueW01-Thin";*/
     font-family: "helvetica";
     font-size: 20px;
-    border: 1px solid #eee;
+    border: dashed 1px black;
+    border-radius: 5px;
+}
+
+
+.flex-container {
+    float: left;
+    position: relative;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+    align-items: stretch;
+    padding: 1.5em 1em;
+    border-radius: 0.2em;
+}
+
+.flex-item {
+    background: #3299bb;
+    border: dashed 1px white;
+    border-radius: 0.2em;
+    margin-bottom: 0.3em;
+    width: 100%;
+}
+
+#header {
+
+}
+
+
+#header > h1 {
+    font-weight: 900;
+    font-size: 2.5em;
+    color: red;
+    margin-bottom: 0;
+}
+
+#header > h3 {
+    font-weight: 500;
+    font-size: 1em;
+    color: white;
+    margin-bottom: 0;
+    margin-top: 0;
+    letter-spacing: .2rem;
 }
 
 video#bgvid {
-    position: relative;
+    position: absolute;
     top: 0;
     left: 50%;
     min-width: 100%;
     min-height: 100%;
-    width: auto;
+    width: 100%;
     height: auto;
     z-index: -100;
     -ms-transform: translateX(-50%) translateY(-50%);
@@ -27,11 +71,13 @@ video#bgvid {
     background-size: cover;
 }
 
-#header {
-    padding-left: 60px;
-    position: absolute;
-    top: 160px;
+.myDiv {
+    float: left;
+    position: relative;
+    color: white;
 }
+
+
 
 #search-result {
     overflow-y: auto;
@@ -138,8 +184,7 @@ video#bgvid {
 }
 
 #mainForm {
-    margin: 20px 0 0 0;
-    width: 1200px;
+    margin: 20px 0 20px 0;
     height: 50px;
     padding: 20px 0 20px 20px;
     background: rgba(0,0,0, 0.5);
@@ -151,7 +196,6 @@ video#bgvid {
 
 #formInternal {
     opacity: 0.8;
-    padding-left: 30px;
 }
 
 #search-box {
