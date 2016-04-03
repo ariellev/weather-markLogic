@@ -176,7 +176,6 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
                 if (event.keyCode === 13 || event.target.id == "searchButton") {
                     $scope.pageNum = 0;
                     var str = JSON.stringify($scope.form);
-                    console.log('data=' + str);
                     var data = JSON.parse(str);
                     data.fromDate = $scope.form.fromDate.getTime();
                     data.toDate = $scope.form.toDate.getTime();
@@ -189,15 +188,16 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
             };
 
             var performSearch = function (payload, pageN, pageL) {
-                console.log('performing search..');
+                var uri = 'http://localhost:8080/weather/v1/events/search/?pageLength=' + pageL + '&pageNum=' + pageN;
+                console.log('performing search.., uri=' + uri);
+                console.log('data=' + JSON.stringify(payload));
                 $scope.dataStyle = {'display': 'none'};
                 $scope.noDataStyle = {'display': 'none'};
                 $scope.searchingStyle = {'display': 'inline'};
 
-
                 before = Date.now();
                 //$http.get('response.json').
-                $http.post('http://localhost:8080/weather/v1/events/search/?pageLength=' + pageL + '&pageNum=' + pageN, payload).
+                $http.post(uri, payload).
                 then(processEvents);
             };
 

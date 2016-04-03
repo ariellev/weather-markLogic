@@ -7,7 +7,6 @@ import com.marklogic.client.document.JSONDocumentManager;
 import com.marklogic.client.io.DocumentMetadataHandle;
 import com.marklogic.client.io.InputStreamHandle;
 import com.marklogic.client.io.SearchHandle;
-import com.marklogic.client.io.StringHandle;
 import com.marklogic.client.query.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,8 +72,8 @@ public class WeatherService implements IWeatherService {
     }
 
     @Override
-    public String getEvent(String id) {
-        return docMgr.read(getUri(id), new StringHandle()).get();
+    public Event getEvent(String id) {
+        return eventBuilder.getEvent(getUri(id));
     }
 
     @Override

@@ -42,21 +42,21 @@ public class WeatherController {
     }
 
 
-    @RequestMapping(value = "/id/{id}/**", method = RequestMethod.GET)
-    String getEvent(@PathVariable(value = "id") String id) {
+    @RequestMapping(value = "/id/{id}/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    Event getEvent(@PathVariable(value = "id") String id) {
         logger.info("getEvent, id=" + id);
-        String event = service.getEvent(id);
+        Event event = service.getEvent(id);
         return event;
     }
 
-    @RequestMapping(value = "/{type}/**", method = RequestMethod.GET)
+    @RequestMapping(value = "/{type}/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     Event[] getEventByType(@PathVariable(value = "type") String type) {
         logger.info("getEventByType, type=" + type);
         Event[] events = service.getEventsByType(type);
         return events;
     }
 
-    @RequestMapping(value = "/search/**", method = RequestMethod.POST)
+    @RequestMapping(value = "/search/**", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     Event[] searchEvents(@RequestBody SearchPayload payload,
                          @RequestParam(value = "pageLength", required = false, defaultValue = "10") int pageLength,
                          @RequestParam(value = "pageNum", required = false, defaultValue = "0") int pageNum) {

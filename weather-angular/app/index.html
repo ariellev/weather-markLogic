@@ -22,9 +22,11 @@
 </head>
 
 <body ng-app="weatherApp" ng-controller="SearchCtrl">
-    <video muted="true" autoplay loop id="bgvid">
-        <source src='videos/winter.webm' type=video/webm>
-        <source src='videos/winter.mp4' type=video/mp4>
+    <video muted autoplay loop id="bgvid">
+<!--
+        <source src='videos/winter.mp4' type='video/mp4'>
+-->
+        <source src='videos/winter.webm' type='video/webm'>
     </video>
     <img id="logo" src="logo-marklogic.svg" style="color:white; float:left; position:relative; width: 120px"/>
 
@@ -53,7 +55,7 @@
         </div>
         <div id="search-result" class="flex-container">
             <div id="mertics" ng-style="merticsStyle" class="flex-item" style="font-size: 0.5em; color:white; position:relative; float: left">
-                <div style="position:relative; float: left">page {{(pageNum + 1) | number}}, {{totalResults | number}} results ({{totalSeconds | number}} seconds) •</div>
+                <div style="position:relative; float: left">page {{(pageNum + 1) | number}} • {{totalResults | number}} results ({{totalSeconds | number}} seconds) •</div>
                 <div ng-click="previousPage($event)" class="pageButton">previous</div>
                 <div ng-click="nextPage($event)" class="pageButton">next</div>
             </div>
