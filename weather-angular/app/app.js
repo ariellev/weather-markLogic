@@ -147,6 +147,7 @@ var weatherApp = angular.module('weatherApp', ['datePicker', 'leaflet-directive'
             };
 
             var processNoData = function (response) {
+                $scope.geojson.data = [];
                 $scope.dataStyle = {'display': 'none'};
                 $scope.noDataStyle = {'display': 'inline'};
             };
