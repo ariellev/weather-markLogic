@@ -3,6 +3,10 @@
 ### setup
 make sure all git, gradle, maven, npm are installed on your machine
 
+### clone git repo
+git clone https://github.com/ariellev/weather-markLogic/
+
+
 ### start backend
 cd weather-spring/
 
