@@ -1,5 +1,8 @@
 # Run the Application
 
+### setup
+make sure all git, gradle, maven, npm are installed on your machine
+
 ### start backend
 cd weather-spring/
 
